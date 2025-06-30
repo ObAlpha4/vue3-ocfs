@@ -1,35 +1,30 @@
-@import './base.css';
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@import "tailwindcss/preflight.css" layer(base);
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+@layer base {
+    h1 {
+        font-size: calc(1.375rem + 1.5vw);
+        font-weight: 600;
+    }
+    h2 {
+        font-size: calc(1.325rem + 0.9vw);
+        font-weight: 600;
+    }
+    h3 {
+        font-size: calc(1.3rem + 0.6vw);
+        font-weight: 600;
+    }
+    h4 {
+        font-size: calc(1.275rem + 0.3vw);
+        font-weight: 600;
+    }
+    h5 {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    h6 {
+        font-size: 1rem;
+        font-weight: 600;
+    }
 }

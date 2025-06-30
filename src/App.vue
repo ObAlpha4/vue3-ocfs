@@ -1,85 +1,65 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <header>
+        <nav class="navbar">
+            <h3>有机化学与食品安全科普平台</h3>
+            <ul class="urls-menu">
+                <li>
+                    <router-link :to="{ name: 'Index' }">
+                        <span class="material-symbols-sharp">home</span>
+                        首页
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{ name:'ChemistryDatabase' }">
+                        <span class="material-symbols-sharp">view_kanban</span>
+                        科普专题
+                    </router-link>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="material-symbols-sharp">account_circle</span>
+                        用户中心
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="material-symbols-sharp">rss_feed</span>
+                        有机化学论坛
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+    <div class="p-3 md:p-4 lg:p-5">
+        <RouterView />
     </div>
-  </header>
-
-  <RouterView />
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
+.material-symbols-sharp {
+    @apply select-none;
+}
+
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+    @apply relative z-10 h-full;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.navbar {
+    @apply flex w-full flex-row flex-wrap items-center justify-between px-3 py-3 md:flex-nowrap md:px-4 lg:px-5;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.urls-menu {
+    @apply mt-2 flex flex-col gap-2 md:mt-0 md:flex-row;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.urls-menu li a {
+    @apply flex w-full flex-nowrap items-center gap-1 overflow-hidden text-nowrap rounded-md px-3 py-2 text-lg hover:bg-blue-300/50 hover:text-blue-600;
 }
 </style>
