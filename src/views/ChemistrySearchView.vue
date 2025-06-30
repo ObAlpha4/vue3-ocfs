@@ -26,7 +26,7 @@ async function fetchResults() {
     const qw = route.query.qw;
     if (!qw) return;
     loading.value = true;
-    let url = `/chemistry/search/?query=${route.query.qw}`;
+    let url = `/chemistry/search/`;
     try {
         const response = await APIRequest({ url: url, method: "get", params: { query: qw } });
         chemData.value = response.data;
