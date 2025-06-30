@@ -5,8 +5,38 @@ import { getDataFromUrl } from "./api";
 
 const showToTop = ref(false);
 const route = useRoute();
+const router = useRouter();
 const loading = ref(true);
-const chemData = ref(null);
+const chemData = ref([
+    {
+        id: "-1",
+        image_url: "",
+        add_time: "",
+        pubchem_cid: "-1",
+        boiling_point: "",
+        cas: "",
+        chemi_id: "",
+        chembl_id: "",
+        density: "",
+        flash_point: "",
+        formula: "如果你看到了这条数据，代表系统出现了问题，请联系开发者。",
+        h_acceptors: "",
+        h_donors: "",
+        heavy_atom: "",
+        inchi: "",
+        iupac: "",
+        logp: "",
+        melting_point: "",
+        molecular_mass: "",
+        name_cn: "test",
+        name_en: "test",
+        rotate_bonds: "",
+        ring: "",
+        smiles: "",
+        tpsa: "",
+        wiki_url: "",
+    },
+]);
 
 function checkHeight() {
     if (document.documentElement.scrollHeight > window.innerHeight) {
@@ -25,16 +55,16 @@ onMounted(async () => {
     try {
         const response = await getDataFromUrl(url);
         chemData.value = response.data;
+        checkHeight();
     } catch (err) {
         console.error(err);
     } finally {
         loading.value = false;
     }
-    checkHeight();
 });
 
 function searchDB() {
-    useRouter().push(`/chemistry/search/`);
+    router.push(`/chemistry/search/`);
 }
 </script>
 
@@ -56,10 +86,10 @@ function searchDB() {
                 <img src="" alt="chem-img" />
             </div>
             <div id="right">
-                <!-- <h4>{{ item.name_cn }}</h4>
+                <h4>{{ item.name_cn }}</h4>
                 <h4>{{ item.name_en }}</h4>
                 <p>{{ item.formula }}</p>
-                <router-link :to="{ name: 'ChemistryDetail', params: { cid: item.pubchem_cid }}">详细信息</router-link> -->
+                <router-link :to="{ name: 'ChemistryDetail', params: { cid: item.pubchem_cid }}">详细信息</router-link>
             </div>
         </div>
     </div>
