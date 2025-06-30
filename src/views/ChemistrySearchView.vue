@@ -22,13 +22,13 @@ function scrollToTop() {
     });
 }
 
+const rqqw = route.query.qw;
 async function fetchResults() {
-    const qw = route.query.qw;
-    if (!qw) return;
+    if (!rqqw) return;
     loading.value = true;
     let url = `/chemistry/search/`;
     try {
-        const response = await APIRequest({ url: url, method: "get", params: { query: qw } });
+        const response = await APIRequest({ url: url, method: "get", params: { query: rqqw } });
         chemData.value = response.data;
     } catch (err) {
         console.error(err);

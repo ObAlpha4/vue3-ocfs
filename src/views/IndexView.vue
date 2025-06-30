@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 
 const router = useRouter();
+const qw = ref("");
 
 function viewDB() {
     router.push({ name: "ChemistryDatabase" });
 }
 
-function searchDB() {
-    router.push({ name: "ChemistrySearch" });
+function searchDB(event: Event) {
+    event.preventDefault();
+    if (qw.value.trim()) {
+        router.push({ name: "ChemistrySearch", query: { qw: qw.value } });
+    }
 }
 </script>
 
@@ -30,7 +35,7 @@ function searchDB() {
                 <div class="tip-form">
                     <form method="get" @submit="searchDB">
                         <div class="input-group">
-                            <input type="text" id="query" name="query" required />
+                            <input type="text" v-model="qw" required />
                             <button type="submit">搜索</button>
                         </div>
                     </form>
