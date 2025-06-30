@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import IndexView from "@/views/IndexView.vue";
-import ChemistryDatabaseView from "../views/ChemistryDatabaseView.vue";
+import ChemistryDatabaseView from "@/views/ChemistryDatabaseView.vue";
 import ChemistrySearchView from "@/views/ChemistrySearchView.vue";
 import ChemistryDetailView from "@/views/ChemistryDetailView.vue";
 
