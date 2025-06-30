@@ -93,8 +93,8 @@ function searchDB() {
             <div id="right">
                 <!-- <h4>{{ item.name_cn }}</h4>
                 <h4>{{ item.name_en }}</h4>
-                <p>{{ item.formula }}</p>
-                <router-link :to="{ name: 'ChemistryDetail', params: { cid: item.pubchem_cid }}">详细信息</router-link> -->
+                <p>{{ item.formula }}</p> -->
+                <router-link :to="{ name: 'ChemistryDetail', params: { cid: 1 }}">详细信息</router-link>
             </div>
         </div>
     </div>

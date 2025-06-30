@@ -5,7 +5,7 @@ import ChemistrySearchView from "@/views/ChemistrySearchView.vue";
 import ChemistryDetailView from "@/views/ChemistryDetailView.vue";
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHistory("/vue3-ocfs/"),
     routes: [
         { path: "/", name: "Index", component: IndexView },
         {
