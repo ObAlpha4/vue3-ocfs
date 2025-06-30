@@ -1,45 +1,12 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
-import { getDataFromUrl } from "./api";
+import APIRequest from "@/utils/request";
 
-const showToTop = ref(false);
 const route = useRoute();
 const loading = ref(true);
-const chemData = ref({
-    id: "-1",
-    image_url: "",
-    add_time: "",
-    pubchem_cid: "-1",
-    boiling_point: "",
-    cas: "",
-    chemi_id: "",
-    chembl_id: "",
-    density: "",
-    flash_point: "",
-    formula: "如果你看到了这条数据，代表系统出现了问题，请联系开发者。",
-    h_acceptors: "",
-    h_donors: "",
-    heavy_atom: "",
-    inchi: "",
-    iupac: "",
-    logp: "",
-    melting_point: "",
-    molecular_mass: "",
-    name_cn: "test",
-    name_en: "test",
-    rotate_bonds: "",
-    ring: "",
-    smiles: "",
-    tpsa: "",
-    wiki_url: "",
-});
+const chemData = ref();
 
-function checkHeight() {
-    if (document.documentElement.scrollHeight > window.innerHeight) {
-        showToTop.value = true;
-    }
-}
 function scrollToTop() {
     window.scrollTo({
         top: 0,
@@ -50,9 +17,8 @@ function scrollToTop() {
 onMounted(async () => {
     let url = `/chemistry/detail/${route.params.cid}/`;
     try {
-        const response = await getDataFromUrl(url);
+        const response = await APIRequest({ url: url, method: "get" });
         chemData.value = response.data;
-        checkHeight();
     } catch (err) {
         console.error(err);
     } finally {
@@ -62,26 +28,32 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="chem-detail">
+    <div v-if="loading">加载中...</div>
+    <div v-else class="chem-detail">
         <div id="left">
             <div class="flex justify-center">
-                <img src="" alt="chem-img" class="chem-img large" />
+                <img :src="chemData.image_url" alt="chem-img" class="chem-img large" />
             </div>
-            <div>{{ chemData }}</div>
+            <h3>{{ chemData.name_cn }}</h3>
+            <h3>{{ chemData.name_en }}</h3>
+            <div></div>
         </div>
+        <ul id="right">
+            <li v-for="(val, key) in chemData" :key="key">
+                <h5 class="text-left">{{ key }}</h5>
+                <p class="text-right break-all">{{ val }}</p>
+            </li>
+        </ul>
     </div>
 
-    <p id="to-top" :class="{ show: showToTop }" @click="scrollToTop()"><span class="material-symbols-sharp">arrow_upward</span>回到顶部</p>
+    <p id="to-top" @click="scrollToTop"><span class="material-symbols-sharp">arrow_upward</span>回到顶部</p>
 </template>
 
 <style scoped>
 @reference "tailwindcss";
 
 #to-top {
-    @apply mt-4 hidden w-max cursor-pointer select-none items-center justify-start rounded-md border border-solid border-yellow-500 px-1.5 py-1;
-}
-#to-top.show {
-    @apply flex;
+    @apply mt-4 flex w-max cursor-pointer items-center justify-start rounded-md border border-solid border-yellow-500 px-1.5 py-1 select-none;
 }
 
 .chem-img.large {
@@ -92,7 +64,7 @@ onMounted(async () => {
     @apply flex flex-col gap-4 md:flex-row;
 }
 .chem-detail #left {
-    @apply flex w-full flex-col gap-3 break-words text-center md:w-96;
+    @apply flex w-full flex-col gap-3 text-center break-words md:w-96;
 }
 .chem-detail #right {
     @apply w-full divide-y *:px-3 *:py-1 md:w-[calc(100%-25rem)];

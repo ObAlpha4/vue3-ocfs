@@ -14,7 +14,7 @@ import { RouterLink, RouterView } from "vue-router";
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{ name:'ChemistryDatabase' }">
+                    <router-link :to="{ name: 'ChemistryDatabase' }">
                         <span class="material-symbols-sharp">view_kanban</span>
                         科普专题
                     </router-link>
@@ -48,7 +48,7 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 header {
-    @apply relative z-10 h-full;
+    @apply relative z-10 h-full bg-neutral-200 text-black shadow-md;
 }
 
 .navbar {
@@ -60,6 +60,6 @@ header {
 }
 
 .urls-menu li a {
-    @apply flex w-full flex-nowrap items-center gap-1 overflow-hidden text-nowrap rounded-md px-3 py-2 text-lg hover:bg-blue-300/50 hover:text-blue-600;
+    @apply flex w-full flex-nowrap items-center gap-1 overflow-hidden rounded-md px-3 py-2 text-lg text-nowrap hover:bg-blue-300/50 hover:text-blue-600;
 }
 </style>

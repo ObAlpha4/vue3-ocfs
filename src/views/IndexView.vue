@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+
 function viewDB() {
     router.push({ name: "ChemistryDatabase" });
 }
@@ -24,10 +25,10 @@ function searchDB() {
         <div class="section-body">
             <h3>认识有机物</h3>
             <p>碳、氢，这两种元素构成了有机物世界的基石；氧、氮等元素则为这缤纷多彩的世界再添浓墨重彩的一笔。</p>
-            <div class="grid grid-cols-2 items-center gap-3">
-                <button type="button" class="viewDB" @click="viewDB()">浏览有机物数据库</button>
+            <div class="grid grid-cols-1 items-center justify-center gap-3 md:grid-cols-2">
+                <button type="button" class="viewDB" @click="viewDB">浏览有机物数据库</button>
                 <div class="tip-form">
-                    <form method="get" @submit="searchDB()">
+                    <form method="get" @submit="searchDB">
                         <div class="input-group">
                             <input type="text" id="query" name="query" required />
                             <button type="submit">搜索</button>
@@ -90,7 +91,7 @@ section .cta-button {
 }
 
 .viewDB {
-    @apply w-max rounded-md bg-blue-500 px-6 py-4 text-white cursor-pointer;
+    @apply w-max cursor-pointer rounded-md bg-blue-500 px-6 py-4 text-white;
 }
 
 .tip-form {

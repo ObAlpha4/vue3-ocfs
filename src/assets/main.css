@@ -1,8 +1,12 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/forms";
 @import "tailwindcss/preflight.css" layer(base);
+@plugin "@tailwindcss/forms";
 
 @layer base {
+    :root {
+        @apply !bg-slate-100 !text-black;
+    }
+
     h1 {
         font-size: calc(1.375rem + 1.5vw);
         font-weight: 600;
