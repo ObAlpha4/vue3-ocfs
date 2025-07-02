@@ -1,7 +1,7 @@
 import axios from "axios";
 const APIRequest = axios.create({
-    // baseURL: "http://127.0.0.1:8000",
-    baseURL: "https://django.obalpha4.dpdns.org",
+    baseURL: "http://127.0.0.1:8000",
+    // baseURL: "https://django.obalpha4.dpdns.org",
     timeout: 5000,
     withCredentials: true,
 });

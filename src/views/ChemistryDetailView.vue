@@ -32,7 +32,8 @@ onMounted(async () => {
     <div v-else class="chem-detail">
         <div id="left">
             <div class="flex justify-center">
-                <img :src="chemData.image_url" alt="chem-img" class="chem-img large" />
+                <!-- <img :src="chemData.image_url" alt="chem-img" class="chem-img large" /> -->
+                <p>图片占位符</p>
             </div>
             <h3>{{ chemData.name_cn }}</h3>
             <h3>{{ chemData.name_en }}</h3>
@@ -52,10 +53,6 @@ onMounted(async () => {
 <style scoped>
 @reference "tailwindcss";
 
-#to-top {
-    @apply mt-4 flex w-max cursor-pointer items-center justify-start rounded-md border border-solid border-yellow-500 px-1.5 py-1 select-none;
-}
-
 .chem-img.large {
     @apply size-64 max-w-64;
 }
@@ -68,5 +65,9 @@ onMounted(async () => {
 }
 .chem-detail #right {
     @apply w-full divide-y *:px-3 *:py-1 md:w-[calc(100%-25rem)];
+}
+
+#to-top {
+    @apply mt-4 flex w-max cursor-pointer items-center justify-start rounded-md border border-solid border-yellow-500 px-1.5 py-1 select-none;
 }
 </style>

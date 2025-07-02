@@ -1,11 +1,11 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import IndexView from "@/views/IndexView.vue";
 import ChemistryDatabaseView from "@/views/ChemistryDatabaseView.vue";
 import ChemistrySearchView from "@/views/ChemistrySearchView.vue";
 import ChemistryDetailView from "@/views/ChemistryDetailView.vue";
 
 const router = createRouter({
-    history: createWebHashHistory(import.meta.env.BASE_URL),
+    history: createWebHistory("/vue3-ocfs/"),
     routes: [
         { path: "/", name: "Index", component: IndexView },
         {

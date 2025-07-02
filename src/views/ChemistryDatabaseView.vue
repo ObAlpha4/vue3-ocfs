@@ -6,16 +6,15 @@ import APIRequest from "@/utils/request";
 const router = useRouter();
 const showToTop = ref(false);
 const qw = ref("");
-const loading = ref(true);
+const loading = ref(false);
 const chemData = ref();
 const pageNum = ref(1);
+const totalPage = ref(1);
 const prevPage = ref(true);
 const nextPage = ref(true);
 
 function checkHeight() {
-    if (document.documentElement.scrollHeight > window.innerHeight) {
-        showToTop.value = true;
-    }
+    showToTop.value = document.documentElement.scrollHeight > window.innerHeight;
 }
 function scrollToTop() {
     window.scrollTo({
@@ -24,42 +23,32 @@ function scrollToTop() {
     });
 }
 
-onMounted(async () => {
-    let url = `/chemistry/database/?page=${pageNum.value}`;
-    prevPage.value = false;
-    try {
-        const response = await APIRequest(url);
-        chemData.value = response.data;
-        checkHeight();
-    } catch (err) {
-        console.error(err);
-    } finally {
-        loading.value = false;
-    }
-});
-
-watch(pageNum, async (newpageNum, oldpageNum) => {
-    let url = `/chemistry/database/?page=${pageNum.value}`;
-    if (newpageNum == 1) {
+async function fetchResults(pgn: number) {
+    if (pgn == 1 || pgn == null) {
         prevPage.value = false;
         nextPage.value = true;
-    } else if (newpageNum == 259) {
+    } else if (pgn == totalPage.value) {
         prevPage.value = true;
         nextPage.value = false;
     } else {
         prevPage.value = true;
         nextPage.value = true;
     }
+
     try {
-        const response = await APIRequest({ url: url, method: "get" });
-        chemData.value = response.data;
-        checkHeight();
+        const response = await APIRequest.get("/chemistry/database/", {
+            params: { page: pgn },
+        });
+        chemData.value = response.data.results;
+        totalPage.value = response.data.totalPages;
     } catch (err) {
         console.error(err);
     } finally {
         loading.value = false;
     }
-});
+}
+onMounted(fetchResults);
+watch(pageNum, (pgn) => fetchResults(pgn));
 
 function searchDB(event: Event) {
     event.preventDefault();
@@ -70,12 +59,13 @@ function searchDB(event: Event) {
 </script>
 
 <template>
-    <div class="flex justify-between">
+    <div class="section-body flex justify-between">
         <div class="pageNav">
             <p @click="pageNum = 1">首页</p>
             <p v-if="prevPage" @click="pageNum--">上一页</p>
+            <p>当前&nbsp;{{ pageNum }}&nbsp;页，共&nbsp;{{ totalPage }}&nbsp;页</p>
             <p v-if="nextPage" @click="pageNum++">下一页</p>
-            <p @click="pageNum = 259">末页</p>
+            <p @click="pageNum = totalPage">末页</p>
         </div>
         <div class="tip-form">
             <form method="get" @submit="searchDB">
@@ -88,20 +78,23 @@ function searchDB(event: Event) {
         </div>
     </div>
 
-    <div v-if="loading">加载中...</div>
-    <div v-else class="card-list mt-6">
-        <div v-for="item in chemData" class="card">
-            <div id="left">
-                <img :src="item.image_url" alt="chem-img" />
-            </div>
-            <div id="right">
-                <h4>{{ item.name_cn }}</h4>
-                <h4>{{ item.name_en }}</h4>
-                <p>{{ item.formula }}</p>
-                <router-link :to="{ name: 'ChemistryDetail', params: { cid: item.pubchem_cid } }">详细信息</router-link>
+    <section class="mt-12">
+        <div v-if="loading">加载中...</div>
+        <div v-else class="card-group">
+            <div v-for="item in chemData" class="card">
+                <div id="left">
+                    <!-- <img :src="item.image_url" alt="chem-img" /> -->
+                    <p>图片占位符</p>
+                </div>
+                <div id="right">
+                    <h4>{{ item.name_cn }}</h4>
+                    <h4>{{ item.name_en }}</h4>
+                    <p>{{ item.formula }}</p>
+                    <router-link :to="{ name: 'ChemistryDetail', params: { cid: item.pubchem_cid } }">详细信息</router-link>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <p id="to-top" :class="{ show: showToTop }" @click="scrollToTop"><span class="material-symbols-sharp">arrow_upward</span>回到顶部</p>
 </template>
@@ -110,15 +103,8 @@ function searchDB(event: Event) {
 @reference "tailwindcss";
 @plugin "@tailwindcss/forms";
 
-#to-top {
-    @apply hidden w-max cursor-pointer items-center justify-start rounded-md border border-solid border-yellow-500 select-none;
-}
-#to-top.show {
-    @apply mt-4 flex px-1.5 py-1;
-}
-
 .pageNav {
-    @apply flex items-center;
+    @apply flex items-center select-none;
 }
 .pageNav p {
     @apply cursor-pointer border-y border-l border-solid border-emerald-500 px-3 py-2 first:rounded-l-md last:rounded-r-md last:border-r;
@@ -145,23 +131,30 @@ function searchDB(event: Event) {
     @apply text-blue-500 no-underline hover:underline;
 }
 
-.card-list {
-    @apply flex flex-col items-center gap-6 lg:mx-24;
+.card-group {
+    @apply mx-8 grid grid-flow-row grid-cols-1 items-center gap-5 md:grid-cols-2 lg:mx-16;
 }
-.card-list .card {
-    @apply flex w-full flex-col gap-4 overflow-x-hidden rounded-md bg-white px-6 py-4 text-black shadow-md md:flex-row;
+.card-group .card {
+    @apply flex h-full w-full flex-col gap-4 overflow-x-hidden rounded-md bg-white px-6 py-4 text-black shadow-md md:flex-row;
 }
-.card-list .card #left {
+.card-group .card #left {
     @apply flex justify-center md:items-center md:justify-normal;
 }
-.card-list .card #left img {
+.card-group .card #left img {
     @apply size-32 max-w-32;
 }
-.card-list .card #right {
+.card-group .card #right {
     @apply flex w-full flex-col justify-center text-center break-words *:px-3 *:py-1 md:w-[calc(100%-9rem)];
 }
 
 .chem-img {
     @apply size-32 max-w-32;
+}
+
+#to-top {
+    @apply mt-4 hidden w-max cursor-pointer items-center justify-start rounded-md border border-solid border-yellow-500 px-1.5 py-1 select-none;
+}
+#to-top.show {
+    @apply flex;
 }
 </style>

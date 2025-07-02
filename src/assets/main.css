@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tailwindcss/preflight.css" layer(base);
-@plugin "@tailwindcss/forms";
 
 @layer base {
     :root {
